@@ -1,0 +1,51 @@
+server:
+  port: ${GATEWAY_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        # Product Service Routes
+        - id: product-service
+          uri: ${PRODUCT_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/api/products/**
+
+        # Warehouse Service Routes
+        - id: warehouse-service
+          uri: ${WAREHOUSE_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/api/warehouses/**
+
+        # Supplier Service Routes
+        - id: supplier-service
+          uri: ${SUPPLIER_SERVICE_URL:http://localhost:8083}
+          predicates:
+            - Path=/api/suppliers/**
+
+        # Inventory Service Routes
+        - id: inventory-service
+          uri: ${INVENTORY_SERVICE_URL:http://localhost:8084}
+          predicates:
+            - Path=/api/inventory/**
+
+        # Stock Movement Service Routes
+        - id: stock-movement-service
+          uri: ${STOCK_MOVEMENT_SERVICE_URL:http://localhost:8085}
+          predicates:
+            - Path=/api/stock-movements/**
+
+        # Notification Service Routes
+        - id: notification-service
+          uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8086}
+          predicates:
+            - Path=/api/notifications/**
+
+logging:
+  level:
+    com.warehouse.gateway: INFO
+    org.springframework.cloud.gateway: INFO
+    org.springframework: WARN

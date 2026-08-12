@@ -1,0 +1,2 @@
+com\warehouse\gateway\filter\LoggingFilter.class
+com\warehouse\gateway\ApiGatewayApplication.class
