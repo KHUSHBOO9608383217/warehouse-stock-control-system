@@ -1,0 +1,207 @@
+version: '3.8'
+
+services:
+  # =============================================
+  # Infrastructure Services
+  # =============================================
+
+  mysql:
+    image: mysql:8.0
+    container_name: warehouse-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - warehouse-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    container_name: warehouse-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - warehouse-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.4.0
+    container_name: warehouse-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - warehouse-network
+
+  # =============================================
+  # Application Services
+  # =============================================
+
+  product-service:
+    build: ./product-service
+    container_name: warehouse-product-service
+    ports:
+      - "8081:8081"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root123
+      PRODUCT_SERVICE_PORT: 8081
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - warehouse-network
+
+  warehouse-service:
+    build: ./warehouse-service
+    container_name: warehouse-warehouse-service
+    ports:
+      - "8082:8082"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root123
+      WAREHOUSE_SERVICE_PORT: 8082
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - warehouse-network
+
+  supplier-service:
+    build: ./supplier-service
+    container_name: warehouse-supplier-service
+    ports:
+      - "8083:8083"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root123
+      SUPPLIER_SERVICE_PORT: 8083
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - warehouse-network
+
+  inventory-service:
+    build: ./inventory-service
+    container_name: warehouse-inventory-service
+    ports:
+      - "8084:8084"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root123
+      INVENTORY_SERVICE_PORT: 8084
+      PRODUCT_SERVICE_URL: http://product-service:8081
+    depends_on:
+      mysql:
+        condition: service_healthy
+      product-service:
+        condition: service_started
+    networks:
+      - warehouse-network
+
+  stock-movement-service:
+    build: ./stock-movement-service
+    container_name: warehouse-stock-movement-service
+    ports:
+      - "8085:8085"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root123
+      STOCK_MOVEMENT_SERVICE_PORT: 8085
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      INVENTORY_SERVICE_URL: http://inventory-service:8084
+      PRODUCT_SERVICE_URL: http://product-service:8081
+    depends_on:
+      mysql:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      inventory-service:
+        condition: service_started
+    networks:
+      - warehouse-network
+
+  notification-service:
+    build: ./notification-service
+    container_name: warehouse-notification-service
+    ports:
+      - "8086:8086"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: root
+      DB_PASSWORD: root123
+      NOTIFICATION_SERVICE_PORT: 8086
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      mysql:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    networks:
+      - warehouse-network
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: warehouse-api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      GATEWAY_PORT: 8080
+      PRODUCT_SERVICE_URL: http://product-service:8081
+      WAREHOUSE_SERVICE_URL: http://warehouse-service:8082
+      SUPPLIER_SERVICE_URL: http://supplier-service:8083
+      INVENTORY_SERVICE_URL: http://inventory-service:8084
+      STOCK_MOVEMENT_SERVICE_URL: http://stock-movement-service:8085
+      NOTIFICATION_SERVICE_URL: http://notification-service:8086
+    depends_on:
+      - product-service
+      - warehouse-service
+      - supplier-service
+      - inventory-service
+      - stock-movement-service
+      - notification-service
+    networks:
+      - warehouse-network
+
+networks:
+  warehouse-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
