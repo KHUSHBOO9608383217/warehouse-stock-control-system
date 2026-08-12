@@ -1,0 +1,11 @@
+com\warehouse\notification\controller\NotificationController.class
+com\warehouse\notification\dto\ApiResponse.class
+com\warehouse\notification\kafka\StockEventConsumer.class
+com\warehouse\notification\entity\NotificationLog.class
+com\warehouse\notification\NotificationServiceApplication.class
+com\warehouse\notification\dto\NotificationResponse.class
+com\warehouse\notification\dto\ApiResponse$ApiResponseBuilder.class
+com\warehouse\notification\dto\NotificationResponse$NotificationResponseBuilder.class
+com\warehouse\notification\repository\NotificationLogRepository.class
+com\warehouse\notification\entity\NotificationLog$NotificationLogBuilder.class
+com\warehouse\notification\config\SwaggerConfig.class

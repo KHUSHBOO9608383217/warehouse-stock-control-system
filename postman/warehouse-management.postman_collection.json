@@ -1,0 +1,260 @@
+{
+  "info": {
+    "name": "Laptop Warehouse Management",
+    "description": "Complete API collection for the Laptop Manufacturing Warehouse Stock Control System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "productServiceUrl", "value": "http://localhost:8081" },
+    { "key": "warehouseServiceUrl", "value": "http://localhost:8082" },
+    { "key": "supplierServiceUrl", "value": "http://localhost:8083" },
+    { "key": "inventoryServiceUrl", "value": "http://localhost:8084" },
+    { "key": "stockMovementServiceUrl", "value": "http://localhost:8085" },
+    { "key": "notificationServiceUrl", "value": "http://localhost:8086" }
+  ],
+  "item": [
+    {
+      "name": "1. Product Service",
+      "item": [
+        {
+          "name": "Create Product - Intel i5",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productCode\": \"PROC-TEST\",\n  \"name\": \"Intel Core i5 Processor (Test)\",\n  \"category\": \"PROCESSOR\",\n  \"description\": \"Test processor product\",\n  \"unit\": \"PCS\",\n  \"minimumStockLevel\": 20\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api", "products"] }
+          }
+        },
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api", "products"] }
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/products/1", "host": ["{{baseUrl}}"], "path": ["api", "products", "1"] }
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productCode\": \"PROC-TEST\",\n  \"name\": \"Intel Core i5 Processor (Updated)\",\n  \"category\": \"PROCESSOR\",\n  \"description\": \"Updated description\",\n  \"unit\": \"PCS\",\n  \"minimumStockLevel\": 25\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/products/1", "host": ["{{baseUrl}}"], "path": ["api", "products", "1"] }
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/api/products/1", "host": ["{{baseUrl}}"], "path": ["api", "products", "1"] }
+          }
+        },
+        {
+          "name": "Get Products by Category",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/products/category/PROCESSOR", "host": ["{{baseUrl}}"], "path": ["api", "products", "category", "PROCESSOR"] }
+          }
+        },
+        {
+          "name": "Search Products by Name",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/api/products/search?name=Intel", "host": ["{{baseUrl}}"], "path": ["api", "products", "search"], "query": [{ "key": "name", "value": "Intel" }] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Warehouse Service",
+      "item": [
+        {
+          "name": "Create Warehouse",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"warehouseCode\": \"WH-TEST\",\n  \"name\": \"Test Warehouse\",\n  \"location\": \"Bangalore, Karnataka\",\n  \"managerName\": \"Test Manager\",\n  \"capacity\": 5000\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/warehouses", "host": ["{{baseUrl}}"], "path": ["api", "warehouses"] }
+          }
+        },
+        {
+          "name": "Get All Warehouses",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/warehouses", "host": ["{{baseUrl}}"], "path": ["api", "warehouses"] } }
+        },
+        {
+          "name": "Get Warehouse by ID",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/warehouses/1", "host": ["{{baseUrl}}"], "path": ["api", "warehouses", "1"] } }
+        }
+      ]
+    },
+    {
+      "name": "3. Supplier Service",
+      "item": [
+        {
+          "name": "Create Supplier",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"supplierCode\": \"SUP-TEST\",\n  \"name\": \"Test Supplies Ltd\",\n  \"contactPerson\": \"Test Person\",\n  \"email\": \"test@supplies.com\",\n  \"phone\": \"+91-9876543210\",\n  \"address\": \"Test Address, Bangalore\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/suppliers", "host": ["{{baseUrl}}"], "path": ["api", "suppliers"] }
+          }
+        },
+        {
+          "name": "Get All Suppliers",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/suppliers", "host": ["{{baseUrl}}"], "path": ["api", "suppliers"] } }
+        },
+        {
+          "name": "Search Suppliers",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/suppliers/search?name=Tech", "host": ["{{baseUrl}}"], "path": ["api", "suppliers", "search"], "query": [{ "key": "name", "value": "Tech" }] } }
+        }
+      ]
+    },
+    {
+      "name": "4. Inventory Service",
+      "item": [
+        {
+          "name": "Create Inventory",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"warehouseId\": 1,\n  \"quantity\": 0,\n  \"reservedQuantity\": 0\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/inventory", "host": ["{{baseUrl}}"], "path": ["api", "inventory"] }
+          }
+        },
+        {
+          "name": "Get All Inventory",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/inventory", "host": ["{{baseUrl}}"], "path": ["api", "inventory"] } }
+        },
+        {
+          "name": "Get Inventory by Product",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/inventory/product/1", "host": ["{{baseUrl}}"], "path": ["api", "inventory", "product", "1"] } }
+        },
+        {
+          "name": "Get Low Stock Inventory",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/inventory/low-stock", "host": ["{{baseUrl}}"], "path": ["api", "inventory", "low-stock"] } }
+        }
+      ]
+    },
+    {
+      "name": "5. Stock Movement Service",
+      "item": [
+        {
+          "name": "Stock IN - Receive 100 units",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"warehouseId\": 1,\n  \"quantity\": 100,\n  \"movementType\": \"IN\",\n  \"referenceNumber\": \"PO-2024-001\",\n  \"remarks\": \"Received from supplier\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/stock-movements", "host": ["{{baseUrl}}"], "path": ["api", "stock-movements"] }
+          }
+        },
+        {
+          "name": "Stock OUT - Issue 30 units",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"warehouseId\": 1,\n  \"quantity\": 30,\n  \"movementType\": \"OUT\",\n  \"referenceNumber\": \"MFG-2024-001\",\n  \"remarks\": \"Issued to manufacturing\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/stock-movements", "host": ["{{baseUrl}}"], "path": ["api", "stock-movements"] }
+          }
+        },
+        {
+          "name": "Stock TRANSFER - Move 20 units",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"warehouseId\": 1,\n  \"destinationWarehouseId\": 2,\n  \"quantity\": 20,\n  \"movementType\": \"TRANSFER\",\n  \"referenceNumber\": \"TRF-2024-001\",\n  \"remarks\": \"Transfer to finished goods warehouse\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/stock-movements", "host": ["{{baseUrl}}"], "path": ["api", "stock-movements"] }
+          }
+        },
+        {
+          "name": "Get All Stock Movements",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/stock-movements", "host": ["{{baseUrl}}"], "path": ["api", "stock-movements"] } }
+        },
+        {
+          "name": "Get Movements by Type IN",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/stock-movements/type/IN", "host": ["{{baseUrl}}"], "path": ["api", "stock-movements", "type", "IN"] } }
+        }
+      ]
+    },
+    {
+      "name": "6. Notification Service",
+      "item": [
+        {
+          "name": "Get All Notifications",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/notifications", "host": ["{{baseUrl}}"], "path": ["api", "notifications"] } }
+        }
+      ]
+    },
+    {
+      "name": "7. Complete Business Flow",
+      "description": "Execute these requests in order to demonstrate the full stock management flow",
+      "item": [
+        {
+          "name": "Step 1 - Create Inventory Record",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"productId\": 5,\n  \"warehouseId\": 1,\n  \"quantity\": 0,\n  \"reservedQuantity\": 0\n}" },
+            "url": { "raw": "{{baseUrl}}/api/inventory", "host": ["{{baseUrl}}"], "path": ["api", "inventory"] }
+          }
+        },
+        {
+          "name": "Step 2 - Receive 100 SSDs",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"productId\": 5,\n  \"warehouseId\": 1,\n  \"quantity\": 100,\n  \"movementType\": \"IN\",\n  \"referenceNumber\": \"PO-DEMO-001\",\n  \"remarks\": \"Demo: Receive 100 SSDs\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/stock-movements", "host": ["{{baseUrl}}"], "path": ["api", "stock-movements"] }
+          }
+        },
+        {
+          "name": "Step 3 - Issue 30 SSDs",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"productId\": 5,\n  \"warehouseId\": 1,\n  \"quantity\": 30,\n  \"movementType\": \"OUT\",\n  \"referenceNumber\": \"MFG-DEMO-001\",\n  \"remarks\": \"Demo: Issue 30 SSDs to manufacturing\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/stock-movements", "host": ["{{baseUrl}}"], "path": ["api", "stock-movements"] }
+          }
+        },
+        {
+          "name": "Step 4 - Check Inventory",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/inventory/product/5", "host": ["{{baseUrl}}"], "path": ["api", "inventory", "product", "5"] } }
+        },
+        {
+          "name": "Step 5 - Check Notifications",
+          "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/api/notifications", "host": ["{{baseUrl}}"], "path": ["api", "notifications"] } }
+        }
+      ]
+    }
+  ]
+}
