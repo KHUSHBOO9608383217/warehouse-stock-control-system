@@ -1,0 +1,51 @@
+server:
+  port: ${STOCK_MOVEMENT_SERVICE_PORT:8085}
+
+spring:
+  application:
+    name: stock-movement-service
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/warehouse_stock_movement_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+  # Kafka Producer Configuration
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+# Kafka Topic Names
+kafka:
+  topic:
+    stock-events: stock-events
+    low-stock-events: low-stock-events
+
+# Inter-Service Communication
+service:
+  inventory-service:
+    url: ${INVENTORY_SERVICE_URL:http://localhost:8084}
+  product-service:
+    url: ${PRODUCT_SERVICE_URL:http://localhost:8081}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+logging:
+  level:
+    com.warehouse.stockmovement: INFO
+    org.springframework: WARN
+    org.apache.kafka: WARN
