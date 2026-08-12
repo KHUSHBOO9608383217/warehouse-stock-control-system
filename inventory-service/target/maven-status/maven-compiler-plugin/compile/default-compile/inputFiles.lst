@@ -1,0 +1,17 @@
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\config\SwaggerConfig.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\dto\response\InventoryResponse.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\entity\Inventory.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\exception\ResourceNotFoundException.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\controller\InventoryController.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\dto\ProductDTO.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\config\RestTemplateConfig.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\exception\GlobalExceptionHandler.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\InventoryServiceApplication.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\exception\InsufficientStockException.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\dto\request\InventoryRequest.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\repository\InventoryRepository.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\service\InventoryService.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\client\ProductServiceClient.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\dto\response\ApiResponse.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\service\impl\InventoryServiceImpl.java
+D:\Java Spring Boot Microservices Project\laptop-warehouse-management\inventory-service\src\main\java\com\warehouse\inventory\mapper\InventoryMapper.java
