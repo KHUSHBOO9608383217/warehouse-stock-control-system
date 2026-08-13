@@ -18,13 +18,10 @@ A complete **Java Spring Boot microservices backend** for managing laptop compon
 - [Stock Management Flow](#stock-management-flow)
 - [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites)
-- [Local Setup](#local-setup)
-- [Docker Setup](#docker-setup)
 - [Swagger URLs](#swagger-urls)
 - [Postman Collection](#postman-collection)
 - [Testing](#testing)
-- [Business Rules](#business-rules)
-- [Interview Explanation](#how-i-would-explain-this-project-in-an-interview)
+- [Project Explanation](#project-explanation)
 - [Future Enhancements](#future-enhancements)
 - [Troubleshooting](#troubleshooting)
 
@@ -372,69 +369,6 @@ laptop-warehouse-management/
 - **MySQL 8.0** running on `localhost:3306`
 - **Apache Kafka** running on `localhost:9092`
 
-### For Docker Setup
-
-- **Docker** and **Docker Compose**
-
----
-
-## Local Setup
-
-### 1. Clone the repository
-
-```bash
-git clone <repository-url>
-cd laptop-warehouse-management
-```
-
-### 2. Set up MySQL
-
-```bash
-# Create the databases
-mysql -u root -p < docker/mysql-init/init.sql
-```
-
-### 3. Set up Kafka
-
-Follow [Kafka Quickstart](https://kafka.apache.org/quickstart) to run Zookeeper and Kafka locally.
-
-### 4. Build the project
-
-```bash
-mvn clean install -DskipTests
-```
-
-### 5. Start the services (each in a separate terminal)
-
-```bash
-# Start services in order
-cd product-service && mvn spring-boot:run
-cd warehouse-service && mvn spring-boot:run
-cd supplier-service && mvn spring-boot:run
-cd inventory-service && mvn spring-boot:run
-cd stock-movement-service && mvn spring-boot:run
-cd notification-service && mvn spring-boot:run
-cd api-gateway && mvn spring-boot:run
-```
-
----
-
-## Docker Setup
-
-```bash
-# Build and start everything
-docker-compose up --build
-
-# Run in background
-docker-compose up --build -d
-
-# View logs
-docker-compose logs -f
-
-# Stop everything
-docker-compose down
-```
-
 ---
 
 ## Swagger URLs
@@ -484,23 +418,7 @@ cd stock-movement-service && mvn test
 
 ---
 
-## Business Rules
-
-1. Product code must be unique
-2. Warehouse code must be unique
-3. Supplier code must be unique
-4. Inventory quantity cannot be negative
-5. Reserved quantity cannot exceed total quantity
-6. `availableQuantity = quantity - reservedQuantity`
-7. Stock OUT cannot exceed available stock
-8. Stock TRANSFER requires sufficient source stock
-9. Inactive products cannot receive new stock movements
-10. TRANSFER requires a destination warehouse (different from source)
-11. Low-stock event is published when stock reaches/falls below minimum level
-
----
-
-## How I Would Explain This Project in an Interview
+## Project Explanation
 
 > "I built a warehouse stock control system for a laptop manufacturing company using **Java Spring Boot microservices**. The company receives laptop components like processors, RAM, and SSDs from suppliers and stores them in warehouses.
 >
@@ -576,6 +494,3 @@ docker-compose up --build
 
 ---
 
-## License
-
-This project is for educational and portfolio purposes.
