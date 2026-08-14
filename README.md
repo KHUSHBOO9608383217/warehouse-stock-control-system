@@ -360,7 +360,6 @@ laptop-warehouse-management/
 
 ---
 
-## Prerequisites
 
 ### For Local Development
 
